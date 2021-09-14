@@ -8,9 +8,15 @@
 import UIKit
 
 class MainValuteTableViewController: UITableViewController {
+    
+    private let urlValute = "https://www.cbr-xml-daily.ru/daily_json.js"
+    
+    var valutes: [Valute] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getValue()
+//        tableView.reloadData()
 
     }
 
@@ -18,18 +24,41 @@ class MainValuteTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        return valutes.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "valuteCell", for: indexPath) as! ValuteCell
 
-        // Configure the cell...
+        let valuteCell = valutes[indexPath.row]
+        cell.configure(with: valuteCell)
 
         return cell
     }
     
+    
+    func getValue() {
+        
+        guard let url = URL(string: urlValute) else { return }
+        
+        let session = URLSession.shared
+        
+        session.dataTask(with: url) { data, _, error in
+            guard let data = data else { return }
+            do {
+                let valutesJson = try JSONDecoder().decode(Excahnge.self, from: data)
+                DispatchQueue.main.async {
+                    let valutesDict = Array(valutesJson.valute.values)
+                    self.valutes = valutesDict
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print(error)
+            }
+        }.resume()
+        
+    }
 
     /*
     // Override to support conditional editing of the table view.

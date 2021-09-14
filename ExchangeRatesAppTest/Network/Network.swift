@@ -7,25 +7,27 @@
 
 import Foundation
 
-class NetworkService {
-    
-    private init() {}
-    static let shared = NetworkService()
-    
-    public func getData(url: URL, completion: @escaping (Any) -> ()) {
-        let session = URLSession.shared
-        
-        session.dataTask(with: url) { data, response, error in
-            guard let data = data else { return }
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                DispatchQueue.main.async {
-                    completion(json)
-                }
-            } catch {
-                print(error)
-            }
-        }.resume()
-        
-    }
-}
+//class NetworkService {
+//    
+//    private let urlValute = "https://www.cbr-xml-daily.ru/daily_json.js"
+//    
+//    public func getValue() {
+//        
+//        guard let url = URL(string: urlValute) else { return }
+//        
+//        let session = URLSession.shared
+//        
+//        session.dataTask(with: url) { data, response, error in
+//            guard let data = data else { return }
+//            do {
+//                let values = try JSONDecoder().decode(Valute.self, from: data)
+//                DispatchQueue.main.async {
+//                    
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }.resume()
+//        
+//    }
+//}

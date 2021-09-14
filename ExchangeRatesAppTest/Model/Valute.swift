@@ -8,11 +8,11 @@
 import Foundation
 
 struct Excahnge: Decodable {
-    let date: Date
-    let previousDate: Date
+    let date: String
+    let previousDate: String
     let previousUrl: String
-    let timestamp: Date
-    let valute: [Valute]
+    let timestamp: String
+    let valute: [String:Valute]
     
     enum CodingKeys: String, CodingKey {
         case date = "Date"
